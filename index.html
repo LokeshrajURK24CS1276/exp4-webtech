@@ -9,6 +9,49 @@
 
 <body>
 
+  <!-- ===================== AUTH GATE MODAL ===================== -->
+  <div id="authModal" class="auth-modal-overlay">
+    <div class="auth-modal-box">
+
+      <div class="auth-modal-logo">LensArt</div>
+      <p class="auth-modal-tagline">Sign in to continue</p>
+
+      <!-- Tab Switcher -->
+      <div class="auth-modal-tabs">
+        <button class="auth-modal-tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-modal-tab" id="tabSignUp" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form class="auth-modal-form" id="formSignIn" onsubmit="closeAuthModal(event)">
+        <label for="modal-signin-email">Email</label>
+        <input id="modal-signin-email" type="email" placeholder="Enter your email" required>
+
+        <label for="modal-signin-password">Password</label>
+        <input id="modal-signin-password" type="password" placeholder="Enter your password" required>
+
+        <button type="submit" class="auth-modal-btn">Sign In &rarr;</button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form class="auth-modal-form hidden" id="formSignUp" onsubmit="closeAuthModal(event)">
+        <label for="modal-signup-name">Name</label>
+        <input id="modal-signup-name" type="text" placeholder="Enter your name" required>
+
+        <label for="modal-signup-email">Email</label>
+        <input id="modal-signup-email" type="email" placeholder="Enter your email" required>
+
+        <label for="modal-signup-password">Password</label>
+        <input id="modal-signup-password" type="password" placeholder="Create a password" required>
+
+        <button type="submit" class="auth-modal-btn">Create Account &rarr;</button>
+      </form>
+
+    </div>
+  </div>
+  <!-- ==================== END AUTH GATE MODAL ==================== -->
+
+
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">LensArt</div>
@@ -16,15 +59,28 @@
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#services">Services</a></li>
-      <li><a href="#auth">Sign In</a></li>
+
+      <!-- Dropdown Menu -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown(event)">
+          More &#9660;
+        </a>
+        <ul class="dropdown-menu" id="dropdownMenu">
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="dropdown-divider"></li>
+          <li><a href="#auth">Sign In / Sign Up</a></li>
+        </ul>
+      </li>
+
+      <li><a href="#auth" class="nav-auth-btn">Sign In</a></li>
     </ul>
   </nav>
 
 
   <!-- Hero -->
   <header class="header" id="home">
-
-
     <!-- Dark overlay -->
     <div class="header-overlay"></div>
 
@@ -54,7 +110,7 @@
 
 
   <!-- About -->
-  <section class="section container">
+  <section class="section container" id="about">
 
     <h2 class="section-title">
       About LensArt
@@ -104,7 +160,7 @@
   </section>
 
 
-  <!-- Sign In / Sign Up -->
+  <!-- Sign In / Sign Up (inline section) -->
   <section class="section container" id="auth">
 
     <h2 class="section-title">
@@ -223,6 +279,59 @@
     </p>
 
   </footer>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script>
+    /* ---- Auth Gate Modal ---- */
+    function closeAuthModal(e) {
+      e.preventDefault();
+      document.getElementById('authModal').style.opacity = '0';
+      document.getElementById('authModal').style.pointerEvents = 'none';
+      setTimeout(() => {
+        document.getElementById('authModal').style.display = 'none';
+        document.body.style.overflow = '';
+      }, 400);
+    }
+
+    function switchTab(tab) {
+      const signInForm = document.getElementById('formSignIn');
+      const signUpForm = document.getElementById('formSignUp');
+      const tabIn = document.getElementById('tabSignIn');
+      const tabUp = document.getElementById('tabSignUp');
+
+      if (tab === 'signin') {
+        signInForm.classList.remove('hidden');
+        signUpForm.classList.add('hidden');
+        tabIn.classList.add('active');
+        tabUp.classList.remove('active');
+      } else {
+        signUpForm.classList.remove('hidden');
+        signInForm.classList.add('hidden');
+        tabUp.classList.add('active');
+        tabIn.classList.remove('active');
+      }
+    }
+
+    /* Show modal on load & prevent body scroll */
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.style.overflow = 'hidden';
+    });
+
+    /* ---- Navbar Dropdown ---- */
+    function toggleDropdown(e) {
+      e.preventDefault();
+      const menu = document.getElementById('dropdownMenu');
+      menu.classList.toggle('open');
+    }
+
+    /* Close dropdown when clicking outside */
+    document.addEventListener('click', (e) => {
+      const dd = document.querySelector('.dropdown');
+      if (dd && !dd.contains(e.target)) {
+        document.getElementById('dropdownMenu').classList.remove('open');
+      }
+    });
+  </script>
 
 </body>
 </html>
